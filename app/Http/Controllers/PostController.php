@@ -28,12 +28,13 @@ class PostController extends Controller
             'imagen' => 'required'
         ]);
 
-        Post::create([
-            'titulo' => $request->titulo,
-            'descripcion' => $request->descripcion,
-            'imagen' => $request->imagen,
-            'user_id' => auth()->user()->id
-        ]);
+        //Forma de crear registros
+        // Post::create([
+        //     'titulo' => $request->titulo,
+        //     'descripcion' => $request->descripcion,
+        //     'imagen' => $request->imagen,
+        //     'user_id' => auth()->user()->id
+        // ]);
 
         //Otra forma de crear registros
         // $post = new Post();
@@ -41,6 +42,14 @@ class PostController extends Controller
         // $post->descripcion = $request->descripcion;
         // $post->imagen = $request->imagen;
         // $post->user_id = auth()->user()->id;
+
+        //Otra forma de crear registros con Relaciones de Eloquent (hasMany,belonsTo)
+        $request->user()->posts()->create([
+            'titulo' => $request->titulo,
+            'descripcion' => $request->descripcion,
+            'imagen' => $request->imagen,
+            'user_id' => auth()->user()->id
+        ]);
 
         return redirect()->route('posts.index', auth()->user()->username);
     }
