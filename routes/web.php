@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ImagenController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
@@ -18,9 +19,11 @@ Route::get('/login', [LoginController::class, 'index'])->name('login');
 Route::post('/login', [LoginController::class, 'store']);
 Route::post('/logout', [LogoutController::class, 'store'])->name('logout');
 
-Route::get('/{user:username}', [PostController::class, 'index'])->name('posts.index')->middleware('auth');
-Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-Route::post('/post', [PostController::class, 'store'])->name('posts.store');
-Route::get('/{user:username}/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/{user:username}', [PostController::class, 'index'])->name('posts.index');
+Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create')->middleware();
+Route::post('/post', [PostController::class, 'store'])->name('posts.store')->middleware();
+Route::get('/{user:username}/posts/{post}', [PostController::class, 'show'])->name('posts.show')->middleware();
+
+Route::post('/{user:username}/posts/{post}', [ComentarioController::class, 'store'])->name('comentarios.store');
 
 Route::post('/imagenes', [ImagenController::class, 'store'])->name('imagenes.store');
